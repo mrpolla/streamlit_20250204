@@ -35,15 +35,15 @@ def scatterplot(df):
         df,
         x="GDP per capita",
         y="Life Expectancy (IHME)",
-        color="headcount_ratio_upper_mid_income_povline",
-        size="Population",  # Adjust this if population data is available
-        hover_name="country",
-        log_x=True,  # GDP is often skewed, so log scale helps visualization
+        color="country",  # Change color to 'country' instead of poverty rate
+        size="Population",  
+        hover_name="country",  # Shows country names on hover
+        log_x=True,  
         title="GDP per Capita vs. Life Expectancy",
         labels={
             "GDP per capita": "GDP per Capita (USD)",
             "Life Expectancy (IHME)": "Life Expectancy (Years)",
-            "headcount_ratio_upper_mid_income_povline": "Poverty Rate",
+            "country": "Country",
         }
     )
     return fig
