@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import plotly as plt
+from plots import scatterplot
 
 # Set page configuration
 st.set_page_config(page_title="Worldwide Analysis of Quality of Life and Economic Factors", 
@@ -39,6 +41,10 @@ with tabs[0]:
         st.metric(label="Mean Poverty Rate (Upper Middle Income)", value=round(year_df["headcount_ratio_upper_mid_income_povline"].mean(), 2))
     with col4:
         st.metric(label="Number of Countries", value=year_df["country"].nunique())
+     # Scatterplot
+    st.write("### GDP vs Life Expectancy")
+    fig = scatterplot(year_df)
+    st.plotly_chart(fig, use_container_width=True)
 
 with tabs[1]:
     st.write("### :bar_chart: Country Deep Dive")
