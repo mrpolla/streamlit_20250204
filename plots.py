@@ -35,15 +35,22 @@ def scatterplot(df):
         df,
         x="GDP per capita",
         y="Life Expectancy (IHME)",
-        color="country",  # Change color to 'country' instead of poverty rate
-        size="Population",  
+        color="country",  # Color by country for better visualization
+        size="headcount_ratio_upper_mid_income_povline",  
         hover_name="country",  # Shows country names on hover
-        log_x=True,  
+        log_x=True,  # Log scale for GDP per capita
         title="GDP per Capita vs. Life Expectancy",
         labels={
-            "GDP per capita": "GDP per Capita (USD)",
+            "GDP per capita": "GDP per Capita (log scale, USD)",
             "Life Expectancy (IHME)": "Life Expectancy (Years)",
             "country": "Country",
         }
     )
+
+    fig.update_layout(
+        xaxis=dict(title="GDP per Capita (log scale, USD)"),  
+        yaxis=dict(title="Life Expectancy (Years)"),
+        template="plotly_white"
+    )
+
     return fig

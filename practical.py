@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from plots import scatterplot
+from model import train_model
 
 # Set page configuration
 st.set_page_config(page_title="Worldwide Analysis of Quality of Life and Economic Factors", 
@@ -45,6 +46,27 @@ with tabs[0]:
     st.write("### GDP vs Life Expectancy")
     fig = scatterplot(year_df)
     st.plotly_chart(fig, use_container_width=True)
+
+
+
+    #Model
+
+    # Create input fields for user selection
+    gdp = st.selectbox("Select GDP per Capita", sorted(df["GDP per capita"].dropna().unique()))
+    poverty_rate = st.selectbox("Select Poverty Rate", sorted(df["headcount_ratio_upper_mid_income_povline"].dropna().unique()))
+    year = st.selectbox("Select Year", sorted(df["year"].dropna().unique()))
+    
+    model = train_model(df)
+    features = ['GDP per capita', 'headcount_ratio_upper_mid_income_povline', 'year']
+    input_data = pd.DataFrame([[gdp, poverty_rate, year]], columns=features)
+    prediction = model.predict(input_data)[0]
+    st.success(f"Predicted Life Expectancy: **{prediction:.2f} years**")
+
+    # Show feature importance as a bar plot
+    feature_importance = model.feature_importances_
+    feature_df = pd.DataFrame({"Feature": features, "Importance": feature_importance})
+    fig = px.bar(feature_df, x="Feature", y="Importance", title="Feature Importance", text_auto=True)
+    st.plotly_chart(fig)
 
 with tabs[1]:
     st.write("### :bar_chart: Country Deep Dive")
