@@ -22,7 +22,24 @@ tabs = st.tabs(["Global Overview", "Country Deep Dive", "Data Explorer"])
 with tabs[0]:
     st.write("### :earth_americas: Global Overview")
     st.write("Explore global trends in GDP, life expectancy, and poverty levels.")
-    
+
+    # Year selection slider
+    year_selected = st.slider("Select a year:", int(df['survey_year'].min()), int(df['survey_year'].max()), int(df['survey_year'].max()))
+        
+    # Filter data for selected year
+    year_df = df[df['survey_year'] == year_selected]
+        
+    # Key Metrics
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric(label="Mean Life Expectancy", value=round(year_df["Life Expectancy (IHME)"].mean(), 2))
+    with col2:
+        st.metric(label="Median GDP per Capita", value=round(year_df["GDP per capita"].median(), 2))
+    with col3:
+        st.metric(label="Mean Poverty Rate (Upper Middle Income)", value=round(year_df["headcount_ratio_upper_mid_income_povline"].mean(), 2))
+    with col4:
+        st.metric(label="Number of Countries", value=year_df["country"].nunique())
+
 with tabs[1]:
     st.write("### :bar_chart: Country Deep Dive")
     st.write("Analyze a specific country’s economic and quality of life factors.")
